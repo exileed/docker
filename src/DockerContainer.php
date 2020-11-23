@@ -32,6 +32,9 @@ class DockerContainer
     /** @var \Spatie\Docker\LabelMapping[] */
     public array $labelMappings = [];
 
+    /** @var \Spatie\Docker\OptionMapping[] */
+    public array $options = [];
+
     public bool $cleanUpAfterExit = true;
 
     public bool $stopOnDestruct = false;
@@ -118,6 +121,13 @@ class DockerContainer
         return $this;
     }
 
+    public function setOption(string $optionName, string $valueName): self
+    {
+        $this->options[] = new OptionMapping($optionName, $valueName);
+
+        return $this;
+    }
+
     public function setVolume(string $pathOnHost, string $pathOnDocker): self
     {
         $this->volumeMappings[] = new VolumeMapping($pathOnHost, $pathOnDocker);
@@ -183,6 +193,10 @@ class DockerContainer
 
         if (count($this->labelMappings)) {
             $extraOptions[] = implode(' ', $this->labelMappings);
+        }
+
+        if (count($this->options)) {
+            $extraOptions[] = implode(' ', $this->options);
         }
 
         if ($this->name !== '') {
