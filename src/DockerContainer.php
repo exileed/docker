@@ -90,7 +90,7 @@ class DockerContainer
         return $this;
     }
 
-    public function setNetwork(bool $networkName): self
+    public function setNetwork(string $networkName): self
     {
         $this->networkName = $networkName;
 
@@ -190,7 +190,7 @@ class DockerContainer
         }
 
         if ($this->networkName !== '') {
-            $extraOptions[] = "--network {$this->name}";
+            $extraOptions[] = "--network {$this->networkName}";
         }
 
         if ($this->daemonize) {
