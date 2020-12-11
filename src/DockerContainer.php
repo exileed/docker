@@ -14,6 +14,8 @@ class DockerContainer
 
     public string $name = '';
 
+    public ?string $networkName = '';
+
     public bool $daemonize = true;
 
     public bool $privileged = false;
@@ -84,6 +86,13 @@ class DockerContainer
     public function cleanUpAfterExit(bool $cleanUpAfterExit): self
     {
         $this->cleanUpAfterExit = $cleanUpAfterExit;
+
+        return $this;
+    }
+
+    public function setNetwork(bool $networkName): self
+    {
+        $this->networkName = $networkName;
 
         return $this;
     }
@@ -178,6 +187,10 @@ class DockerContainer
 
         if ($this->name !== '') {
             $extraOptions[] = "--name {$this->name}";
+        }
+
+        if ($this->networkName !== '') {
+            $extraOptions[] = "--network {$this->name}";
         }
 
         if ($this->daemonize) {
